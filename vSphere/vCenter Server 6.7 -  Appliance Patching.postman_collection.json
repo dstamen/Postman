@@ -1,0 +1,710 @@
+{
+	"info": {
+		"_postman_id": "0cfe8896-b5bf-44b8-ae03-9ed289e18746",
+		"name": "vCenter Server 6.7 -  Appliance Patching",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Appliance - Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Response time is less than 1000ms\"] = responseTime < 1000;"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW5pc3RyYXRvckB2c3BoZXJlLmxvY2FsOlZNd2FyZTEh"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{vc}}/rest/com/vmware/cis/session",
+							"protocol": "https",
+							"host": [
+								"{{vc}}"
+							],
+							"path": [
+								"rest",
+								"com",
+								"vmware",
+								"cis",
+								"session"
+							]
+						},
+						"description": "Login to the specified vCenter and retrieve a session"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Response time is less than 1000ms\"] = responseTime < 1000;"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{vc}}/rest/com/vmware/cis/session",
+							"protocol": "https",
+							"host": [
+								"{{vc}}"
+							],
+							"path": [
+								"rest",
+								"com",
+								"vmware",
+								"cis",
+								"session"
+							]
+						},
+						"description": "Logout of the specified vCenter"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Appliance - Update",
+			"item": [
+				{
+					"name": "Check for Updates",
+					"item": [
+						{
+							"name": "Check vCenter Server Update - URL & CD-ROM",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{vc}}/rest/appliance/update/pending?source_type=LOCAL_AND_ONLINE",
+									"protocol": "https",
+									"host": [
+										"{{vc}}"
+									],
+									"path": [
+										"rest",
+										"appliance",
+										"update",
+										"pending"
+									],
+									"query": [
+										{
+											"key": "source_type",
+											"value": "LOCAL_AND_ONLINE"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Check vCenter Server Update - CD-ROM",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{vc}}/rest/appliance/update/pending?source_type=LOCAL",
+									"protocol": "https",
+									"host": [
+										"{{vc}}"
+									],
+									"path": [
+										"rest",
+										"appliance",
+										"update",
+										"pending"
+									],
+									"query": [
+										{
+											"key": "source_type",
+											"value": "LOCAL"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Check vCenter Server Update - Last Check",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{vc}}/rest/appliance/update/pending?source_type=LAST_CHECK",
+									"protocol": "https",
+									"host": [
+										"{{vc}}"
+									],
+									"path": [
+										"rest",
+										"appliance",
+										"update",
+										"pending"
+									],
+									"query": [
+										{
+											"key": "source_type",
+											"value": "LAST_CHECK"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "vCenter Server Update - Version Details",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "",
+										"type": "text",
+										"value": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{vc}}/rest/appliance/update/pending/{{version}}",
+									"protocol": "https",
+									"host": [
+										"{{vc}}"
+									],
+									"path": [
+										"rest",
+										"appliance",
+										"update",
+										"pending",
+										"{{version}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Update Policy",
+					"item": [
+						{
+							"name": "vCenter Server Update Policy - Get",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{vc}}/rest/appliance/update/policy",
+									"protocol": "https",
+									"host": [
+										"{{vc}}"
+									],
+									"path": [
+										"rest",
+										"appliance",
+										"update",
+										"policy"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "vCenter Server Update Policy - Set",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{vc}}/rest/appliance/update/policy",
+									"protocol": "https",
+									"host": [
+										"{{vc}}"
+									],
+									"path": [
+										"rest",
+										"appliance",
+										"update",
+										"policy"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Stage Updates",
+					"item": [
+						{
+							"name": "vCenter Server Update - Stage Update",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "",
+										"type": "text",
+										"value": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{vc}}/rest/appliance/update/pending/{{version}}?action=stage&=",
+									"protocol": "https",
+									"host": [
+										"{{vc}}"
+									],
+									"path": [
+										"rest",
+										"appliance",
+										"update",
+										"pending",
+										"{{version}}"
+									],
+									"query": [
+										{
+											"key": "action",
+											"value": "stage"
+										},
+										{
+											"key": "",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "vCenter Server Update - Get Staged Update",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "",
+										"type": "text",
+										"value": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{vc}}/rest/appliance/update/staged",
+									"protocol": "https",
+									"host": [
+										"{{vc}}"
+									],
+									"path": [
+										"rest",
+										"appliance",
+										"update",
+										"staged"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "vCenter Server Update - Delete Staged Update",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "",
+										"type": "text",
+										"value": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{vc}}/rest/appliance/update/staged",
+									"protocol": "https",
+									"host": [
+										"{{vc}}"
+									],
+									"path": [
+										"rest",
+										"appliance",
+										"update",
+										"staged"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Install Updates",
+					"item": [
+						{
+							"name": "vCenter Server Update - Precheck",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{vc}}/rest/appliance/update/pending/{{version}}?action=precheck&=",
+									"protocol": "https",
+									"host": [
+										"{{vc}}"
+									],
+									"path": [
+										"rest",
+										"appliance",
+										"update",
+										"pending",
+										"{{version}}"
+									],
+									"query": [
+										{
+											"key": "action",
+											"value": "precheck"
+										},
+										{
+											"key": "",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "vCenter Server Update - Install",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "",
+										"type": "text",
+										"value": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"user_data\": [\n    {\n      \"value\": \"{{**sso-password}}\",\n      \"key\": \"vmdir.password\"\n    }\n  ]\n}"
+								},
+								"url": {
+									"raw": "https://{{vc}}/rest/appliance/update/pending/{{version}}?action=install&=",
+									"protocol": "https",
+									"host": [
+										"{{vc}}"
+									],
+									"path": [
+										"rest",
+										"appliance",
+										"update",
+										"pending",
+										"{{version}}"
+									],
+									"query": [
+										{
+											"key": "action",
+											"value": "install"
+										},
+										{
+											"key": "",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "vCenter Server Update - Stage and Install",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "",
+										"type": "text",
+										"value": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"user_data\": [\n    {\n      \"value\": \"{{**sso-password}}\",\n      \"key\": \"vmdir.password\"\n    }\n  ]\n}"
+								},
+								"url": {
+									"raw": "https://{{vc}}/rest/appliance/update/pending/{{version}}?action=stage-and-install&=",
+									"protocol": "https",
+									"host": [
+										"{{vc}}"
+									],
+									"path": [
+										"rest",
+										"appliance",
+										"update",
+										"pending",
+										"{{version}}"
+									],
+									"query": [
+										{
+											"key": "action",
+											"value": "stage-and-install"
+										},
+										{
+											"key": "",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "vCenter Server Update - Validate",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "",
+										"type": "text",
+										"value": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"user_data\": [\n    {\n      \"value\": \"{{**sso-password}}\",\n      \"key\": \"vmdir.password\"\n    }\n  ]\n}"
+								},
+								"url": {
+									"raw": "https://{{vc}}/rest/appliance/update/pending/{{version}}?action=validate",
+									"protocol": "https",
+									"host": [
+										"{{vc}}"
+									],
+									"path": [
+										"rest",
+										"appliance",
+										"update",
+										"pending",
+										"{{version}}"
+									],
+									"query": [
+										{
+											"key": "action",
+											"value": "validate"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Update Status",
+					"item": [
+						{
+							"name": "vCenter Server Update - Status",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{vc}}/rest/appliance/update",
+									"protocol": "https",
+									"host": [
+										"{{vc}}"
+									],
+									"path": [
+										"rest",
+										"appliance",
+										"update"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		}
+	]
+}
